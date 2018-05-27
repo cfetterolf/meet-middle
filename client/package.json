@@ -1,0 +1,41 @@
+{
+  "name": "job-search-client",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:3001",
+  "dependencies": {
+    "history": "^4.7.2",
+    "prop-types": "^15.6.1",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-loading": "^1.0.4",
+    "react-scripts": "1.1.0",
+    "reactstrap": "^5.0.0",
+    "styled-components": "^3.2.1",
+    "babel-polyfill": "~6.7.*",
+    "marked": "^0.3.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.5.1",
+    "react-test-renderer": "^16.2.0"
+  },
+  "author": "Chris Fetterolf <cfetterolf@middlebury.edu>",
+  "contributors": [
+    "Chris Fetterolf <cfetterolf@middlebury.edu>",
+    "Connor Hannify <chanify@middlebury.edu>"
+  ],
+  "license": "Apache-2.0"
+}

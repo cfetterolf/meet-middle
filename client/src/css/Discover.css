@@ -1,0 +1,77 @@
+.discover-form {
+  position: absolute;
+  top: 32px;
+  bottom: 20px;
+  left: 25px;
+  right: 25px;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.24);
+  background-color: white;
+  border-radius: 10px;
+  overflow-y: scroll;
+}
+
+.add-form {
+  position: absolute;
+  top: 32px;
+  bottom: 20px;
+  left: 25px;
+  right: 25px;
+  background-color: inherit;
+  overflow-y: scroll;
+}
+
+.input-wrapper form {
+  padding: 20px;
+}
+
+.help-icon {
+  position: absolute;
+  top: 0px;
+  right: 15px;
+  z-index:10;
+  font-size: 20px;
+  margin: 10px 0 10px 0px;
+}
+
+.result-list {
+  margin-bottom: 20px;
+}
+
+.result-list h5 {
+  font-weight: bold;
+}
+.list-group-item:hover {
+  filter: brightness(95%);
+}
+
+.no-results {
+  height: 200px;
+  background-color: #F0F0F0;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.24);
+  text-align: center;
+  padding: 60px 10px 10px 10px;
+}
+
+.no-results-text {
+  color: #999999;
+}
+
+.no-results-header {
+  color: #666666;
+  margin-top: -40px;
+}
+
+#giraffeIcon {
+  width: 200px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+#giraffeIcon2 {
+  width: 200px;
+  position: absolute;
+  bottom: 0;
+  right: 100px;
+}
