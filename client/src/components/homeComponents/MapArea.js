@@ -1,5 +1,6 @@
 import React from 'react';
 import MapContainer from '../mapComponents/MapContainer';
+//import PlacesExample from '../mapComponents/PlacesExample';
 
 
 const mapStyle = {

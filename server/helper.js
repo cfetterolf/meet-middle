@@ -1,4 +1,15 @@
 const async = require('async');
+const request = require('request');
+const bodyParser = require('body-parser');
+
+const API_KEY = 'AIzaSyCCcm1_IdCQxK6VPbkwprS2ya3BT_o7mI4';
+
+exports.getPlaces = (req, res) => {
+  const search_str = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${req.query.lat},${req.query.lng}&radius=1500&type=restaurant&key=${API_KEY}`;
+  request(search_str, function (error, response, body) {
+    res.send({ body: JSON.parse(body) });
+  });
+}
 
 /*
  * Endpoint to guess an email address

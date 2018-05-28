@@ -14,6 +14,7 @@ const app = express();
 // Resolve client build directory as absolute path to avoid errors in express
 const path = require('path'); // eslint-disable-line global-require
 const buildPath = path.resolve(__dirname, '../client/build');
+const request = require('request');
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
@@ -35,6 +36,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // Set up endpoints
+app.get('/api/places', helper.getPlaces);
 // app.post('/api/guess', helper.getEmailAddress);
 // app.post('/api/email', helper.sendEmail);
 
