@@ -1,6 +1,15 @@
 
-export function filterResults(results, minRating, maxPrice, types, number) {
+export function filterResults(resultsObj, minRating, maxPrice, types, number) {
   let filteredResults = [];
+
+  // convert obj to array
+  console.log(resultsObj);
+  let results = [];
+  for (let key in resultsObj) {
+    results.push(resultsObj[key]);
+  }
+
+  console.log(results);
 
   // sort results by rating
   results.sort(compareBy('rating'));

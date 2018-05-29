@@ -1,0 +1,11 @@
+/* Desktop */
+@media all and (min-width:992px) {
+  .results-list-mobile {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media all and (min-width:0px) and (max-width: 990px) {
+  /* put your css styles in here */
+}

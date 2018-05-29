@@ -14,20 +14,28 @@ class MapArea extends React.Component {
 
     this.state = {
       userLocations: [],
+      filteredResults: [],
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.userLocations !== nextProps.userLocations) {
-      console.log(nextProps.userLocations);
       this.setState({ userLocations: nextProps.userLocations });
+    }
+
+    if (this.props.filteredResults !== nextProps.filteredResults) {
+      this.setState({ filteredResults: nextProps.filteredResults });
     }
   }
 
   render() {
     return (
       <div style={mapStyle}>
-        <MapContainer userLocations={this.state.userLocations} />
+        <MapContainer
+          userLocations={this.state.userLocations}
+          getPlacesResults={geo => this.props.getPlacesResults(geo)}
+          filteredResults={this.state.filteredResults}
+        />
       </div>
     );
   }

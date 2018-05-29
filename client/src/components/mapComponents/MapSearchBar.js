@@ -62,9 +62,22 @@ class MapSearchBar extends Component {
 
     this.handleSelect = this.handleSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.clearSearch = this.clearSearch.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.clearLocation && nextProps.clearLocation) {
+      this.setState({ address: '' });
+    }
   }
 
   handleSelect(inputAddress) {
+
+    // remove prev address from parent array
+    if (this.state.prevAddr) {
+      this.props.removeSelected(this.state.prevAddr);
+    }
+
     this.setState({
       address: inputAddress,
       prevAddr: inputAddress,
@@ -103,6 +116,12 @@ class MapSearchBar extends Component {
     });
   }
 
+  clearSearch() {
+    this.setState({ address: '' });
+    this.props.removeSelected(this.state.prevAddr);
+    this.setState({ prevAddr: '' });
+  }
+
   render() {
     const inputProps = {
       type: 'text',
@@ -112,6 +131,13 @@ class MapSearchBar extends Component {
       placeholder: this.props.displayText,
       name: 'Demo__input',
       id: 'my-input-id',
+    };
+
+    const clearSearchStyle = {
+      display: this.state.address ? '' : 'none',
+      position: 'absolute',
+      top: '12px',
+      right: '24px'
     };
 
     return (
@@ -126,6 +152,11 @@ class MapSearchBar extends Component {
           shouldFetchSuggestions={shouldFetchSuggestions}
           onChange={this.handleChange}
         />
+        <div style={clearSearchStyle}>
+          <button type="button" className="close" onClick={this.clearSearch}>
+            <span>&times;</span>
+          </button>
+        </div>
       </div>
     );
   }

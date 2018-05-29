@@ -1,13 +1,26 @@
 const async = require('async');
 const request = require('request');
 const bodyParser = require('body-parser');
+const https = require('https');
 
 const API_KEY = 'AIzaSyCCcm1_IdCQxK6VPbkwprS2ya3BT_o7mI4';
 
+/*
+ * Hits the Google Places Search API given lat, lng, and search radius.
+ */
 exports.getPlaces = (req, res) => {
-  const search_str = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${req.query.lat},${req.query.lng}&radius=1500&type=restaurant&key=${API_KEY}`;
-  request(search_str, function (error, response, body) {
-    res.send({ body: JSON.parse(body) });
+
+  // construct initial request if no token provided
+  const baseURL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?';
+  const query = !req.query.token ? (
+    `${baseURL}location=${req.query.lat},${req.query.lng}&radius=${req.query.radius}&type=restaurant&key=${API_KEY}`) : (
+    `${baseURL}key=${API_KEY}&pagetoken=${req.query.token}`
+  );
+
+  // query Google Places REST API
+  request(query, function (error, response, body) {
+    const apiRes = JSON.parse(body);
+    res.send({ body: apiRes });
   });
 }
 

@@ -1,7 +1,6 @@
+/*global google*/
 import React from "react"
-import { withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps"
-//import MarkerWithLabel from "react-google-maps/lib/components/addons/MarkerWithLabel";
-import { filterResults } from './filter';
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow} from "react-google-maps"
 
 const mapStyle = {
   position: 'absolute',
@@ -31,27 +30,31 @@ const findCenterCoord = (locations) => {
   return middleCoord;
 }
 
-const getPlacesResults = (geo) => {
-  fetch(`api/places?lat=${geo.lat}&lng=${geo.lng}`, { headers: new Headers({ 'Content-type': 'application/json' }) })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.status_text);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      return data;
-    })
-    .catch(err => console.log(err)); // eslint-disable-line no-console
-}
-
 const MapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
     defaultZoom={12}
-    defaultCenter={{ lat: 40.7127753, lng: -74.0059728 }} // NYC
+    defaultCenter={{ lat: 40.7127753, lng: -74.0059728 }}
+    ref={(map) => props.onMapMounted(map)}
   >
     {props.userLocations.map((location, i) => (
-      props.isMarkerShown && <Marker key={i} position={location.geo} defaultTitle={location.name}/>
+      props.isMarkerShown &&
+      <Marker key={i} position={location.geo} defaultTitle={location.name}>
+        <InfoWindow>
+          <div>
+            {location.name}
+          </div>
+        </InfoWindow>
+      </Marker>
+    ))}
+    {props.userLocations.length >= 2 &&
+      props.filteredResults.map((place, i) => (
+      <Marker key={i} position={place.geometry.location} defaultTitle={place.name}>
+        <InfoWindow>
+          <div>
+            {place.name}
+          </div>
+        </InfoWindow>
+      </Marker>
     ))}
   </GoogleMap>
 ));
@@ -67,7 +70,6 @@ class MapContainer extends React.Component {
   }
 
   componentDidMount() {
-    getPlacesResults({ lat: 40.7127753, lng: -74.0059728 });
     this.delayedShowMarker()
   }
 
@@ -83,30 +85,29 @@ class MapContainer extends React.Component {
   }
 
   getPlacesResults(geo) {
-    fetch(`api/places?lat=${geo.lat}&lng=${geo.lng}`, { headers: new Headers({ 'Content-type': 'application/json' }) })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.status_text);
-        }
-        return response.json();
-      })
-      .then((placeData) => {
-        this.setState({ placeData })
-      })
-      .catch(err => console.log(err)); // eslint-disable-line no-console
+
+  }
+
+  setBounds(map, locations) {
+    let bounds = new google.maps.LatLngBounds();
+    for (let i in locations) {
+      bounds.extend(locations[i].geo);
+    }
+    map.fitBounds(bounds);
   }
 
   render() {
     if (this.props.userLocations.length > 1) {
       const middleCoord = findCenterCoord(this.props.userLocations);
+
+      // we received a new middle coordinate
       if (middleCoord.lat !== middle.lat && middleCoord.lng !== middle.lng) {
         middle = middleCoord;
-        this.getPlacesResults(middleCoord);
-      }
-    }
+        this.props.getPlacesResults(middleCoord);
 
-    if (this.state.placeData) {
-      console.log(filterResults(this.state.placeData.body.results, 4.0, 2, ['restaurant', 'bar'], 10));
+        // set map bounds based on user locations
+        this.setBounds(this._map, this.props.userLocations);
+      }
     }
 
     return (
@@ -117,6 +118,7 @@ class MapContainer extends React.Component {
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<div style={mapStyle} />}
         mapElement={<div style={{ height: `100%` }} />}
+        onMapMounted={(ref) => this._map = ref}
         {...this.props}
       />
     )
